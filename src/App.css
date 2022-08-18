@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+.guessableLetters-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 100px;
+  margin: 50px;
+}
