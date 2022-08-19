@@ -4,14 +4,15 @@ import "./App.css";
 import { Button, Grid } from "@mui/material";
 import WordToGuess from "./components/WordToGuess/WordToGuess";
 import WrongLetters from "./components/WrongLetters/WrongLetters";
-import { getPicture } from "./helpers/GetPicture";
+import { getPicture } from "./utils/GetPicture";
 import Alert, { AlertColor } from "@mui/material/Alert";
-import defaultPic from "./images/hangman-step-5.png";
-import { isGameWon } from "./helpers/isGameWon";
+import defaultPic from "./images/hangman-step-4.png";
+import { isGameWon } from "./utils/isGameWon";
 import ReplayRounded from "@mui/icons-material/ReplayRounded";
+import { getRandomCountry } from "./helpers/GetRandomCountry";
 
 function App() {
-  const [wordToGuess, setWordToGuess] = useState<string>("CAMBODIA");
+  const [wordToGuess, setWordToGuess] = useState<string>("");
   const [correctLetters, setCorrectLetters] = useState<Array<string>>([]);
   const [wrongLetters, setWrongLetters] = useState<Array<string>>([]);
   const [picture, setPicture] = useState<string>(defaultPic);
@@ -22,6 +23,34 @@ function App() {
     useState<AlertColor>("success");
 
   const letters = /^[A-Za-z]$/i;
+
+  const handleRestart = () => {
+    setGameMessage("");
+    setHasLost(false);
+    setHasWon(false);
+    setCorrectLetters([]);
+    setWrongLetters([]);
+    setPicture(defaultPic);
+    getData();
+  };
+
+  const checkGameStatus = () => {
+    if (wrongLetters.length >= 6) {
+      setHasLost(true);
+    } else if (isGameWon(wordToGuess, correctLetters)) {
+      setHasWon(true);
+    }
+  };
+
+  const getData = async () => {
+    const randomCountry = await getRandomCountry();
+    setWordToGuess(
+      randomCountry
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+    );
+  };
 
   const keyDownHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (letters.test(event.key) && !hasLost && !hasWon) {
@@ -43,25 +72,20 @@ function App() {
     }
   };
 
-  const checkGameStatus = () => {
-    if (wrongLetters.length >= 6) {
-      console.log(wrongLetters.length);
-      setHasLost(true);
-    } else if (isGameWon(wordToGuess, correctLetters)) {
-      setHasWon(true);
-    }
-  };
-
   useEffect(() => {
-    checkGameStatus();
-    if (!hasWon && !hasLost) {
-      setPicture(getPicture(wrongLetters.length));
-    } else if (hasLost) {
-      setGameMessageSeverity("warning");
-      setGameMessage(`You lost... The correct answer was ${wordToGuess}`);
-    } else if (hasWon) {
-      setGameMessageSeverity("success");
-      setGameMessage(`You made it! The correct answer was ${wordToGuess}`);
+    if (wordToGuess === "") {
+      getData();
+    } else {
+      checkGameStatus();
+      if (!hasWon && !hasLost) {
+        setPicture(getPicture(wrongLetters.length));
+      } else if (hasLost) {
+        setGameMessageSeverity("warning");
+        setGameMessage(`You lost... The correct answer was ${wordToGuess}`);
+      } else if (hasWon) {
+        setGameMessageSeverity("success");
+        setGameMessage(`You made it! The correct answer was ${wordToGuess}`);
+      }
     }
   }, [correctLetters, wrongLetters, hasLost, hasWon]);
 
@@ -91,12 +115,17 @@ function App() {
         <div className="restartButton-container">
           <Button
             className="restartButton-container__button"
+            onClick={handleRestart}
             variant="contained"
             startIcon={<ReplayRounded />}
           >
             Restart
           </Button>
         </div>
+        <Alert severity="info">
+          All special characters are removed so you would have to use the
+          regular ones{" "}
+        </Alert>
       </header>
     </div>
   );

@@ -24,7 +24,7 @@ export const getPicture = (wrongGuesses: number) => {
     // case 3: {
     //   return pic4;
     // }
-    case 0: {
+    case 1: {
       return pic5;
     }
     case 1: {
@@ -46,7 +46,7 @@ export const getPicture = (wrongGuesses: number) => {
       return pic11;
     }
     default: {
-      return pic5;
+      return pic4;
     }
   }
 };
