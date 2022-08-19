@@ -53,3 +53,7 @@
 .restartButton-container__button {
   color: white;
 }
+
+.wordToGuess-grid-container {
+  margin-bottom: 100px;
+}

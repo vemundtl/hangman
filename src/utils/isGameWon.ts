@@ -2,7 +2,7 @@ export const isGameWon = (
   wordToGuess: string,
   correctLetters: Array<String>
 ) => {
-  const wordToGuessArray = wordToGuess.split("");
+  const wordToGuessArray = wordToGuess.replace(/\s/g, "").split("");
   let result: boolean = true;
   wordToGuessArray.forEach((letter) => {
     if (!correctLetters.includes(letter)) {

@@ -73,6 +73,7 @@ function App() {
   };
 
   useEffect(() => {
+    console.log(wordToGuess);
     if (wordToGuess === "") {
       getData();
     } else {
@@ -92,7 +93,7 @@ function App() {
   return (
     <div className="App" tabIndex={0} onKeyDown={keyDownHandler}>
       <header className="App-header">
-        <h2>HANGMAN for countries</h2>
+        <h2>HANGMAN for countries, islands and territories</h2>
         {(hasWon || hasLost) && (
           <Alert sx={{ marginBottom: "30px" }} severity={gameMessageSeverity}>
             {gameMessage}
@@ -105,7 +106,7 @@ function App() {
           <Grid item xs={6} md={4}>
             <WrongLetters wrongLetters={wrongLetters} />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid sx={{ marginBottom: "40px" }} item xs={12} md={12}>
             <WordToGuess
               wordToGuess={wordToGuess}
               correctLetters={correctLetters}

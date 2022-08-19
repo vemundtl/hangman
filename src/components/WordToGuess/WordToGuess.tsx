@@ -9,13 +9,17 @@ interface WordToGuessProps {
 
 const WordToGuess = ({ wordToGuess, correctLetters }: WordToGuessProps) => {
   return (
-    <div>
+    <div className="wordToGuess-container">
       {wordToGuess.split("").map((letter, i) => {
-        return (
-          <span className="wordToGuess__letter" key={i}>
-            {correctLetters.includes(letter) ? letter : ""}
-          </span>
-        );
+        if (letter.charAt(0) === " ") {
+          return <span key={i}>-</span>;
+        } else {
+          return (
+            <span className="wordToGuess__letter" key={i}>
+              {correctLetters.includes(letter) ? letter : ""}
+            </span>
+          );
+        }
       })}
     </div>
   );

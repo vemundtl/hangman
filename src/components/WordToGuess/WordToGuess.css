@@ -1,3 +1,10 @@
+.wordToGuess-container {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .wordToGuess__letter {
   border-bottom: 3px solid #2980b9;
   display: inline-flex;
