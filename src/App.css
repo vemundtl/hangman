@@ -45,3 +45,11 @@
   margin-top: 100px;
   margin: 50px;
 }
+
+.restartButton-container {
+  margin: 40px;
+}
+
+.restartButton-container__button {
+  color: white;
+}

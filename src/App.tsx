@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import WordToGuess from "./components/WordToGuess/WordToGuess";
 import WrongLetters from "./components/WrongLetters/WrongLetters";
 import { getPicture } from "./helpers/GetPicture";
-import pic1 from "./images/hangman-step-1.png";
+import Alert, { AlertColor } from "@mui/material/Alert";
+import defaultPic from "./images/hangman-step-5.png";
+import { isGameWon } from "./helpers/isGameWon";
+import ReplayRounded from "@mui/icons-material/ReplayRounded";
 
 function App() {
   const [wordToGuess, setWordToGuess] = useState<string>("CAMBODIA");
   const [correctLetters, setCorrectLetters] = useState<Array<string>>([]);
   const [wrongLetters, setWrongLetters] = useState<Array<string>>([]);
-  const [picture, setPicture] = useState<any>(pic1);
+  const [picture, setPicture] = useState<string>(defaultPic);
+  const [hasWon, setHasWon] = useState<boolean>(false);
+  const [hasLost, setHasLost] = useState<boolean>(false);
+  const [gameMessage, setGameMessage] = useState<string>("");
+  const [gameMessageSeverity, setGameMessageSeverity] =
+    useState<AlertColor>("success");
 
   const letters = /^[A-Za-z]$/i;
 
   const keyDownHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (letters.test(event.key)) {
+    if (letters.test(event.key) && !hasLost && !hasWon) {
       const keyEventUpperCase = event.key.toUpperCase();
       if (
         !correctLetters.includes(keyEventUpperCase) &&
@@ -35,13 +43,37 @@ function App() {
     }
   };
 
+  const checkGameStatus = () => {
+    if (wrongLetters.length >= 6) {
+      console.log(wrongLetters.length);
+      setHasLost(true);
+    } else if (isGameWon(wordToGuess, correctLetters)) {
+      setHasWon(true);
+    }
+  };
+
   useEffect(() => {
-    setPicture(getPicture(wrongLetters.length));
-  }, [correctLetters, wrongLetters]);
+    checkGameStatus();
+    if (!hasWon && !hasLost) {
+      setPicture(getPicture(wrongLetters.length));
+    } else if (hasLost) {
+      setGameMessageSeverity("warning");
+      setGameMessage(`You lost... The correct answer was ${wordToGuess}`);
+    } else if (hasWon) {
+      setGameMessageSeverity("success");
+      setGameMessage(`You made it! The correct answer was ${wordToGuess}`);
+    }
+  }, [correctLetters, wrongLetters, hasLost, hasWon]);
 
   return (
     <div className="App" tabIndex={0} onKeyDown={keyDownHandler}>
       <header className="App-header">
+        <h2>HANGMAN for countries</h2>
+        {(hasWon || hasLost) && (
+          <Alert sx={{ marginBottom: "30px" }} severity={gameMessageSeverity}>
+            {gameMessage}
+          </Alert>
+        )}
         <Grid container spacing={2}>
           <Grid item xs={6} md={8}>
             <img src={picture} height="300px" width="300px" />
@@ -56,6 +88,15 @@ function App() {
             />
           </Grid>
         </Grid>
+        <div className="restartButton-container">
+          <Button
+            className="restartButton-container__button"
+            variant="contained"
+            startIcon={<ReplayRounded />}
+          >
+            Restart
+          </Button>
+        </div>
       </header>
     </div>
   );

@@ -12,41 +12,41 @@ import pic11 from "../images/hangman-step-11.png";
 
 export const getPicture = (wrongGuesses: number) => {
   switch (wrongGuesses) {
+    // case 0: {
+    //   return pic1;
+    // }
+    // case 1: {
+    //   return pic2;
+    // }
+    // case 2: {
+    //   return pic3;
+    // }
+    // case 3: {
+    //   return pic4;
+    // }
     case 0: {
-      return pic1;
-    }
-    case 1: {
-      return pic2;
-    }
-    case 2: {
-      return pic3;
-    }
-    case 3: {
-      return pic4;
-    }
-    case 4: {
       return pic5;
     }
-    case 5: {
+    case 1: {
       return pic6;
     }
-    case 6: {
+    case 2: {
       return pic7;
     }
-    case 7: {
+    case 3: {
       return pic8;
     }
-    case 8: {
+    case 4: {
       return pic9;
     }
-    case 9: {
+    case 5: {
       return pic10;
     }
-    case 10: {
+    case 6: {
       return pic11;
     }
     default: {
-      return pic1;
+      return pic5;
     }
   }
 };
