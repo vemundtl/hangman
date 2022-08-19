@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getRandomCountry } from "../../utils/GetRandomCountry";
+import { getRandomCountry } from "../../helpers/GetRandomCountry";
 import "../WordToGuess/WordToGuess.css";
 
 interface WordToGuessProps {

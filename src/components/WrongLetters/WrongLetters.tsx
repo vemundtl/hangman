@@ -7,7 +7,7 @@ interface WrongLettersProps {
 const WrongLetters = ({ wrongLetters }: WrongLettersProps) => {
   return (
     <div>
-      <h2>Wrong letters</h2>
+      <h4>Wrong letters</h4>
       {wrongLetters &&
         wrongLetters.map((letter, i) => {
           return (

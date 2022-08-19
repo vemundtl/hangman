@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Grid } from "@mui/material";
 import WordToGuess from "./components/WordToGuess/WordToGuess";
 import WrongLetters from "./components/WrongLetters/WrongLetters";
+import { getPicture } from "./helpers/GetPicture";
+import pic1 from "./images/hangman-step-1.png";
 
 function App() {
   const [wordToGuess, setWordToGuess] = useState<string>("CAMBODIA");
   const [correctLetters, setCorrectLetters] = useState<Array<string>>([]);
   const [wrongLetters, setWrongLetters] = useState<Array<string>>([]);
+  const [picture, setPicture] = useState<any>(pic1);
 
   const letters = /^[A-Za-z]$/i;
 
@@ -32,12 +35,16 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    setPicture(getPicture(wrongLetters.length));
+  }, [correctLetters, wrongLetters]);
+
   return (
     <div className="App" tabIndex={0} onKeyDown={keyDownHandler}>
       <header className="App-header">
         <Grid container spacing={2}>
           <Grid item xs={6} md={8}>
-            <h2>Bilder</h2>
+            <img src={picture} height="300px" width="300px" />
           </Grid>
           <Grid item xs={6} md={4}>
             <WrongLetters wrongLetters={wrongLetters} />
