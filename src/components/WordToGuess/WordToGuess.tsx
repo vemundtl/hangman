@@ -12,10 +12,14 @@ const WordToGuess = ({ wordToGuess, correctLetters }: WordToGuessProps) => {
     <div className="wordToGuess-container">
       {wordToGuess.split("").map((letter, i) => {
         if (letter.charAt(0) === " ") {
-          return <span key={i}>-</span>;
+          return (
+            <div className="wordToGuess-container__whitespace" key={i}>
+              {" "}
+            </div>
+          );
         } else {
           return (
-            <span className="wordToGuess__letter" key={i}>
+            <span className="wordToGuess-container__letter" key={i}>
               {correctLetters.includes(letter) ? letter : ""}
             </span>
           );

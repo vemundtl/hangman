@@ -73,7 +73,6 @@ function App() {
   };
 
   useEffect(() => {
-    console.log(wordToGuess);
     if (wordToGuess === "") {
       getData();
     } else {
